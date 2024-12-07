@@ -1,6 +1,18 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
+
+function convertBigIntToNumber(data: any) {
+    if (Array.isArray(data)) {
+        return data.map(item =>
+            Object.fromEntries(
+                Object.entries(item).map(([key, value]) => [key, typeof value === 'bigint' ? Number(value) : value])
+            )
+        );
+    }
+    return data;
+}
+
 export async function getRacaDistribution() {
     try {
         const resultRaca = await prisma.$queryRaw`
@@ -10,7 +22,7 @@ export async function getRacaDistribution() {
             FROM prodmsgraph.familia f
             GROUP BY raca;
         `;
-        return resultRaca;
+        return convertBigIntToNumber(resultRaca);
     } catch (error) {
         console.error('Error fetching Raca Distribution:', error);
         throw error;
@@ -29,7 +41,7 @@ export async function getSaneamentoAcesso() {
                 SUM(CASE WHEN f.asfaltoCalcamento = 'S' THEN 1 ELSE 0 END) AS 'Asfalto Calçamento'
             FROM prodmsgraph.familia f;
         `;
-        return resultSaneamento;
+        return convertBigIntToNumber(resultSaneamento);
     } catch (error) {
         console.error('Error fetching Saneamento Acesso:', error);
         throw error;
@@ -43,7 +55,7 @@ export async function getFaixaEtariaChefe() {
             FROM Familia
             GROUP BY FLOOR(idadeChefe / 10) * 10;
         `;
-        return resultFaixaEtaria;
+        return convertBigIntToNumber(resultFaixaEtaria);
     } catch (error) {
         console.error('Error fetching Faixa Etaria Chefe:', error);
         throw error;
@@ -58,7 +70,7 @@ export async function getCondicoesMoradia() {
                 SUM(CASE WHEN madeiraTaquara = 'S' THEN 1 ELSE 0 END) AS 'Madeira/Taipa'
             FROM prodmsgraph.familia f;
         `;
-        return resultMoradia;
+        return convertBigIntToNumber(resultMoradia);
     } catch (error) {
         console.error('Error fetching Condicoes Moradia:', error);
         throw error;
@@ -79,7 +91,7 @@ export async function getServicosSociais() {
                 SUM(CASE WHEN naoUtilizaSuas = 'N' THEN 1 ELSE 0 END) AS 'Não Utiliza SUS'
             FROM prodmsgraph.familia f;
         `;
-        return resultServicosSociais;
+        return convertBigIntToNumber(resultServicosSociais);
     } catch (error) {
         console.error('Error fetching Servicos Sociais:', error);
         throw error;
@@ -97,7 +109,7 @@ export async function getBeneficiosRecebidos() {
                 SUM(CASE WHEN naoRecbeBeneficio = 'N' THEN 1 ELSE 0 END) AS 'Não Recebe Benefício'
             FROM prodmsgraph.familia f;
         `;
-        return resultBeneficios;
+        return convertBigIntToNumber(resultBeneficios);
     } catch (error) {
         console.error('Error fetching Beneficios Recebidos:', error);
         throw error;
@@ -131,7 +143,7 @@ export async function getVulnerabilidades() {
                 SUM(CASE WHEN enchentesDesastres = 'S' THEN 1 ELSE 0 END) AS 'Enchentes Desastres'
             FROM prodmsgraph.familia f;
         `;
-        return resultVulnerabilidades;
+        return convertBigIntToNumber(resultVulnerabilidades);
     } catch (error) {
         console.error('Error fetching Vulnerabilidades:', error);
         throw error;
@@ -147,7 +159,7 @@ export async function getGeneroChefeFamilia() {
             FROM prodmsgraph.familia f
             GROUP BY sexo;
         `;
-        return resultGenero;
+        return convertBigIntToNumber(resultGenero);
     } catch (error) {
         console.error('Error fetching Genero Chefe Familia:', error);
         throw error;
@@ -163,7 +175,7 @@ export async function getDistribuicaoRenda() {
                 FROM prodmsgraph.familia f
             GROUP BY somaRenda;
         `;
-        return resultRenda;
+        return convertBigIntToNumber(resultRenda);
     } catch (error) {
         console.error('Error fetching Distribuicao Renda:', error);
         throw error;
@@ -177,7 +189,7 @@ export async function getTrabalhoInfantil() {
                 SUM(CASE WHEN qtdCriancasAdolescentesTrabalham BETWEEN 1 AND 5 THEN qtdCriancasAdolescentesTrabalham ELSE 0 END) AS 'Crianças/Adolescentes Trabalhando'
             FROM prodmsgraph.familia f;
         `;
-        return resultTrabalhoInfantil;
+        return convertBigIntToNumber(resultTrabalhoInfantil);
     } catch (error) {
         console.error('Error fetching Trabalho Infantil:', error);
         throw error;
