@@ -5,10 +5,6 @@ import { familiaController } from "../app/controller/Familiacontroller";
 
 const router: Router = Router()
 
-//Auth
-// router.post("/signup", userController.signup);
-// router.post("/login", userController.login);
-
 //Familia
 router.get("/familia/raca", familiaController.getRacaDistribution);
 router.get("/familia/saneamento", familiaController.getSaneamentoAcesso);

@@ -1,26 +1,25 @@
-import { PrismaClient } from '@prisma/client'
+const { PrismaClient } = require('@prisma/client');
 
 //PARA FUNCIONAR TEM QUE DESCOMENTAR OS DOIS ABAIXO E COMENTAR O ACIMA
 
-// const { PrismaClient } = require('@prisma/client');
 const XLSX = require('xlsx');
-// const prisma = new PrismaClient();
+const prisma = new PrismaClient();
 
 
 //COMENTE TUDO DAQUI
-const prismaClientSingleton = () => {
-  return new PrismaClient()
-}
+// const prismaClientSingleton = () => {
+//   return new PrismaClient()
+// }
 
-declare const globalThis: {
-  prismaGlobal: ReturnType<typeof prismaClientSingleton>;
-} & typeof global;
+// declare const globalThis: {
+//   prismaGlobal: ReturnType<typeof prismaClientSingleton>;
+// } & typeof global;
 
-const prisma = globalThis.prismaGlobal ?? prismaClientSingleton()
+// const prisma = globalThis.prismaGlobal ?? prismaClientSingleton()
 
-export default prisma
+// export default prisma
 
-if (process.env.NODE_ENV !== 'production') globalThis.prismaGlobal = prisma
+// if (process.env.NODE_ENV !== 'production') globalThis.prismaGlobal = prisma
 //COMENTE ATE AQUI
 
 //DAQUI PRA FRENTE É O EXECUTAVEL QUE POPULA O BANCO DE DADOS
@@ -244,7 +243,7 @@ const insertData = async (data: any) => {
 };
 
 const main = async () => {
-  const data = readExcel('C:/Users/adria/Documents/GitHub/MSgraph/dados_ms_graph.xlsx');
+  const data = readExcel('E:/projects/MSgraph/dados_ms_graph.xlsx');
   await insertData(data);
   console.log('Dados importados com sucesso!');
 };
