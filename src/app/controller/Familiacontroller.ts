@@ -20,7 +20,7 @@ class FamiliaController {
         acc[item["Raça"]] = item.Quantidade;
         return acc;
       }, {} as Record<string, number>);
-      return res.json(formattedResponse);
+      return res.json([formattedResponse]);
     } catch (error) {
       console.error("Error in getRacaDistribution:", error);
       return res.status(500).json({ message: "Erro ao obter distribuição de raça", error });
@@ -46,7 +46,7 @@ class FamiliaController {
           item.quantidade
         ])
       );
-      return res.json(formattedResponse);
+      return res.json([formattedResponse]);
     } catch (error) {
       console.error("Error in getFaixaEtariaChefe:", error);
       return res.status(500).json({ message: "Erro ao obter faixa etária do chefe", error });
@@ -100,7 +100,7 @@ class FamiliaController {
         acc[item.Sexo] = item.Quantidade;
         return acc;
       }, {} as Record<string, number>);
-      return res.json(formattedResponse);
+      return res.json([formattedResponse]);
     } catch (error) {
       console.error("Error in getGeneroChefeFamilia:", error);
       return res.status(500).json({ message: "Erro ao obter gênero do chefe de família", error });
@@ -114,7 +114,7 @@ class FamiliaController {
         acc[item["Faixa de Renda"]] = item.Quantidade;
         return acc;
       }, {} as Record<string, number>);
-      return res.json(formattedResponse);
+      return res.json([formattedResponse]);
     } catch (error) {
       console.error("Error in getDistribuicaoRenda:", error);
       return res.status(500).json({ message: "Erro ao obter distribuição de renda", error });
