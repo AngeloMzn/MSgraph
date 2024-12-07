@@ -16,7 +16,11 @@ class FamiliaController {
   public async getRacaDistribution(req: Request, res: Response): Promise<Response> {
     try {
       const response = await getRacaDistribution();
-      return res.json(response);
+      const formattedResponse = response.reduce((acc: any, item: any) => {
+        acc[item["Raça"]] = item.Quantidade;
+        return acc;
+      }, {} as Record<string, number>);
+      return res.json(formattedResponse);
     } catch (error) {
       console.error("Error in getRacaDistribution:", error);
       return res.status(500).json({ message: "Erro ao obter distribuição de raça", error });
@@ -36,7 +40,13 @@ class FamiliaController {
   public async getFaixaEtariaChefe(req: Request, res: Response): Promise<Response> {
     try {
       const response = await getFaixaEtariaChefe();
-      return res.json(response);
+      const formattedResponse = Object.fromEntries(
+        response.map((item: { faixaEtaria: number | null; quantidade: number }) => [
+          item.faixaEtaria === null ? "null" : item.faixaEtaria.toString(),
+          item.quantidade
+        ])
+      );
+      return res.json(formattedResponse);
     } catch (error) {
       console.error("Error in getFaixaEtariaChefe:", error);
       return res.status(500).json({ message: "Erro ao obter faixa etária do chefe", error });
@@ -86,7 +96,11 @@ class FamiliaController {
   public async getGeneroChefeFamilia(req: Request, res: Response): Promise<Response> {
     try {
       const response = await getGeneroChefeFamilia();
-      return res.json(response);
+      const formattedResponse = response.reduce((acc: any, item: any) => {
+        acc[item.Sexo] = item.Quantidade;
+        return acc;
+      }, {} as Record<string, number>);
+      return res.json(formattedResponse);
     } catch (error) {
       console.error("Error in getGeneroChefeFamilia:", error);
       return res.status(500).json({ message: "Erro ao obter gênero do chefe de família", error });
@@ -96,7 +110,11 @@ class FamiliaController {
   public async getDistribuicaoRenda(req: Request, res: Response): Promise<Response> {
     try {
       const response = await getDistribuicaoRenda();
-      return res.json(response);
+      const formattedResponse = response.reduce((acc: any, item: any) => {
+        acc[item["Faixa de Renda"]] = item.Quantidade;
+        return acc;
+      }, {} as Record<string, number>);
+      return res.json(formattedResponse);
     } catch (error) {
       console.error("Error in getDistribuicaoRenda:", error);
       return res.status(500).json({ message: "Erro ao obter distribuição de renda", error });
